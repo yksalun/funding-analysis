@@ -1,5 +1,3 @@
-import { MarkerType } from '@ant-design/pro-flow';
-
 const edgeType = 'radius';
 // const edgeType = 'bezier';
 
@@ -9,9 +7,6 @@ export const edges = [
     source: 'a1',
     target: 'a2',
     type: edgeType,
-    markerEnd: {
-      type: MarkerType.Arrow
-    },
     animated: true,
     data: 'xyz',
     sourceHandle: 'right-out-1',
