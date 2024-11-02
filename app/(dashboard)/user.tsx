@@ -14,7 +14,7 @@ import Link from 'next/link';
 export async function User() {
   // let session = await auth();
   // let user = session?.user;
-  let user = { image: '' };
+  let user: any = null;
 
   return (
     <DropdownMenu>
@@ -52,7 +52,9 @@ export async function User() {
           </DropdownMenuItem>
         ) : (
           <DropdownMenuItem>
-            <Link href="/login">Sign In</Link>
+            <Link href="/login" className="w-full">
+              Sign In
+            </Link>
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>

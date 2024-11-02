@@ -1,9 +1,13 @@
-export default async function ProductsPage(props: {
-  searchParams: Promise<{ q: string; offset: string }>;
-}) {
+'use client';
+import { FlowViewProvider } from '@ant-design/pro-flow';
+import FlowPageCom from '@/components/FlowPageCom';
+
+export default function Home() {
   return (
-    <div className="container mx-auto p-20 text-4xl text-white bg-gray-800 ">
-      hello world
+    <div className="h-full">
+      <FlowViewProvider>
+        <FlowPageCom></FlowPageCom>
+      </FlowViewProvider>
     </div>
   );
 }
