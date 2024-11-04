@@ -28,6 +28,7 @@ import {
 import { Analytics } from '@vercel/analytics/react';
 import { User } from './user';
 import { VercelLogo } from '@/components/icons';
+import { BsBriefcase } from 'react-icons/bs';
 import Providers from './providers';
 import { NavItem } from './nav-item';
 import { SearchInput } from './search';
@@ -45,8 +46,10 @@ export default function DashboardLayout({
           <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <MobileNav />
             <DashboardBreadcrumb />
-            <SearchInput />
-            <User />
+            {/* <SearchInput /> */}
+            <div className="ml-auto">
+              <User />
+            </div>
           </header>
           <main className="grid flex-1 items-start gap-2 p-4 sm:px-6 sm:py-0 md:gap-4 bg-muted/40">
             {children}
@@ -70,10 +73,11 @@ function DesktopNav() {
           <span className="sr-only">Acme Inc</span>
         </Link>
 
-        <NavItem href="#" label="Dashboard">
-          <Home className="h-5 w-5" />
+        <NavItem href="#" label="案件管理">
+          {/* <Home className="h-5 w-5" /> */}
+          <BsBriefcase className="h-5 w-5" />
         </NavItem>
-
+        {/* 
         <NavItem href="#" label="Orders">
           <ShoppingCart className="h-5 w-5" />
         </NavItem>
@@ -88,9 +92,9 @@ function DesktopNav() {
 
         <NavItem href="#" label="Analytics">
           <LineChart className="h-5 w-5" />
-        </NavItem>
+        </NavItem> */}
       </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+      {/* <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
@@ -103,7 +107,7 @@ function DesktopNav() {
           </TooltipTrigger>
           <TooltipContent side="right">Settings</TooltipContent>
         </Tooltip>
-      </nav>
+      </nav> */}
     </aside>
   );
 }
@@ -130,10 +134,10 @@ function MobileNav() {
             href="#"
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
           >
-            <Home className="h-5 w-5" />
-            Dashboard
+            <BsBriefcase className="h-5 w-5" />
+            案件管理
           </Link>
-          <Link
+          {/* <Link
             href="#"
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
           >
@@ -160,7 +164,7 @@ function MobileNav() {
           >
             <LineChart className="h-5 w-5" />
             Settings
-          </Link>
+          </Link> */}
         </nav>
       </SheetContent>
     </Sheet>
