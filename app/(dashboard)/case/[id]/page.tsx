@@ -1,3 +1,5 @@
+import UploadCom from './components/uploadCom';
+
 interface PageParams {
   params: {
     id: string;
@@ -5,5 +7,9 @@ interface PageParams {
 }
 
 export default function Page({ params: { id } }: PageParams) {
-  return <div>case id: {id}</div>;
+  return (
+    <div className="container mx-auto ">
+      <UploadCom></UploadCom>
+    </div>
+  );
 }
