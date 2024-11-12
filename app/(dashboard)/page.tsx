@@ -1,8 +1,3 @@
-import Image from 'next/image';
-import { MoreHorizontal } from 'lucide-react';
-
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -11,23 +6,76 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table';
+import { DataTable } from '@/components/case-table/data-table';
+import { z } from 'zod';
+import { taskSchema } from '@/data/data-table/schema';
+import { columns } from '@/components/case-table/columns';
 
-export default function Page() {
+const taskJsonStr = `[
+  {
+    "id": "TASK-8782",    
+    "title": "TASK-8782",
+    "des": "案件描述",
+    "status": "syncing"
+  },
+  {
+    "id": "TASK-7878",
+    "title": "TASK-8782",
+    "des": "Try to calculate the EXE feed, maybe it will index the multi-byte pixel!",
+    "status": "analysising"
+  },
+  {
+    "id": "TASK-7839",
+    "title": "TASK-8782",
+    "des": "We need to bypass the neural TCP card!",
+    "status": "done"
+  },
+  {
+    "id": "TASK-5562",
+    "title": "TASK-8782",
+    "des": "The SAS interface is down, bypass the open-source pixel so we can back up the PNG bandwidth!",
+    "status": "done"
+  },
+  {
+    "id": "TASK-8686",
+    "title": "TASK-8782",
+    "des": "I'll parse the wireless SSL protocol, that should driver the API panel!",
+    "status": "done"
+  },
+  {
+    "id": "TASK-1280",
+    "title": "TASK-8782",
+    "des": "Use the digital TLS panel, then you can transmit the haptic system!",
+    "status": "done"
+  },
+  {
+    "id": "TASK-7262",
+    "title": "TASK-8782",
+    "des": "The UTF8 application is down, parse the neural bandwidth so we can back up the PNG firewall!",
+    "status": "done"
+  },
+  {
+    "id": "TASK-1138",
+    "title": "TASK-8782",
+    "des": "Generating the driver won't do anything, we need to quantify the 1080p SMTP bandwidth!",
+    "status": "done"
+  },
+  {
+    "id": "TASK-7184",
+    "title": "TASK-8782",
+    "des": "We need to program the back-end THX pixel!",
+    "status": "done"
+  }
+]`;
+
+async function getTasks() {
+  const tasks = JSON.parse(taskJsonStr);
+  return z.array(taskSchema).parse(tasks);
+}
+
+export default async function Page() {
+  const tasks = await getTasks();
+
   return (
     <Card>
       <CardHeader>
@@ -35,7 +83,7 @@ export default function Page() {
         <CardDescription></CardDescription>
       </CardHeader>
       <CardContent>
-        <Table>
+        {/* <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="hidden w-[100px] sm:table-cell">
@@ -273,13 +321,9 @@ export default function Page() {
               </TableCell>
             </TableRow>
           </TableBody>
-        </Table>
+        </Table> */}
+        <DataTable data={tasks} columns={columns} />
       </CardContent>
-      <CardFooter>
-        <div className="text-xs text-muted-foreground">
-          Showing <strong>1-10</strong> of <strong>32</strong> products
-        </div>
-      </CardFooter>
     </Card>
   );
 }
