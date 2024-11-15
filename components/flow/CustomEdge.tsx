@@ -1,6 +1,11 @@
-"use client";
+'use client';
 
-import { EdgeProps, getBezierPath } from "@xyflow/react";
+import {
+  EdgeProps,
+  getBezierPath,
+  getSmoothStepPath,
+  getStraightPath
+} from '@xyflow/react';
 
 export interface CustomEdgeProps extends EdgeProps {
   className?: string;
@@ -18,32 +23,32 @@ export function CustomEdge({
   markerEnd,
   label,
   labelStyle,
-  className,
+  className
 }: CustomEdgeProps) {
-  const [path, labelX, labelY] = getBezierPath({
+  const [path, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
     sourcePosition,
     targetX,
     targetY,
-    targetPosition,
+    targetPosition
   });
 
-  const isHighlighted = className?.includes("highlighted");
+  const isHighlighted = className?.includes('highlighted');
 
   const baseStyle = {
     ...style,
-    stroke: isHighlighted ? "#3b82f6" : "#6366f1",
-    strokeWidth: isHighlighted ? 3 : 2,
+    stroke: isHighlighted ? '#3b82f6' : '#6366f1',
+    strokeWidth: isHighlighted ? 3 : 2
     // transition: 'all 200ms cubic-bezier(0.4, 0, 0.2, 1)',
   };
 
   const baseLabelStyle = {
     ...labelStyle,
-    fill: isHighlighted ? "#3b82f6" : "#4b5563",
+    fill: isHighlighted ? '#3b82f6' : '#4b5563',
     // transition: 'all 200ms cubic-bezier(0.4, 0, 0.2, 1)',
     fontSize: 12,
-    fontWeight: 500,
+    fontWeight: 500
   };
 
   return (
