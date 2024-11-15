@@ -1,3 +1,4 @@
+import FinancialFlow from '@/components/FinancialFlow';
 import UploadCom from './components/uploadCom';
 
 interface PageParams {
@@ -8,8 +9,12 @@ interface PageParams {
 
 export default function Page({ params: { id } }: PageParams) {
   return (
-    <div className="container mx-auto ">
-      <UploadCom></UploadCom>
+    <div className="size-full">
+      <FinancialFlow />
     </div>
+    // <div className="container mx-auto">
+    //   <UploadCom></UploadCom>
+    //   <FinancialFlow />
+    // </div>
   );
 }
