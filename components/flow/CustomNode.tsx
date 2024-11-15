@@ -37,18 +37,10 @@ export const CustomNode = memo(({ id, data, isConnectable = true }: any) => {
       <Handle
         type="target"
         position={Position.Left}
-        id="left-1"
+        id="left"
         isConnectable={isConnectable}
-        className="bg-emerald-500 transition-all duration-200 rounded-full size-3"
+        className="rounded-full size-3 opacity-0"
         // style={handleStyle}
-      />
-      <Handle
-        type="source"
-        position={Position.Left}
-        id="left-2"
-        isConnectable={isConnectable}
-        className="bg-rose-500 transition-all duration-200  rounded-full size-3"
-        // style={{ ...handleStyle, top: '70%' }}
       />
 
       <Card className="min-w-[180px] bg-white shadow-md transition-all duration-200 hover:shadow-lg">
@@ -81,18 +73,10 @@ export const CustomNode = memo(({ id, data, isConnectable = true }: any) => {
       <Handle
         type="source"
         position={Position.Right}
-        id="right-1"
+        id="right"
         isConnectable={isConnectable}
-        className="bg-emerald-500! transition-all duration-200 rounded-full size-3"
+        className="rounded-full size-3 opacity-0"
         // style={handleStyle}
-      />
-      <Handle
-        type="target"
-        position={Position.Right}
-        id="right-2"
-        isConnectable={isConnectable}
-        className="!bg-rose-500 transition-all duration-200  rounded-full size-3"
-        // style={{ ...handleStyle, top: '70%' }}
       />
     </div>
   );
