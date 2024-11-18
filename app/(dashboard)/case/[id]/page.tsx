@@ -1,5 +1,6 @@
 import FinancialFlow from '@/components/FinancialFlow';
 import UploadCom from './components/uploadCom';
+import { StepForm } from './components/SetpForm';
 
 interface PageParams {
   params: {
@@ -10,7 +11,8 @@ interface PageParams {
 export default function Page({ params: { id } }: PageParams) {
   return (
     <div className="size-full">
-      <FinancialFlow />
+      {/* <FinancialFlow /> */}
+      <StepForm />
     </div>
     // <div className="container mx-auto">
     //   <UploadCom></UploadCom>
