@@ -32,18 +32,6 @@ const edgeTypes = {
   custom: CustomEdge
 };
 
-// 智能连接点选择
-const getSmartHandles = (sourceNode: Node, targetNode: Node) => {
-  const sourceX = sourceNode.position.x;
-  const targetX = targetNode.position.x;
-  const isSourceLeftOfTarget = sourceX < targetX;
-
-  return {
-    sourceHandle: isSourceLeftOfTarget ? 'right-1' : 'left-2',
-    targetHandle: isSourceLeftOfTarget ? 'left-1' : 'right-2'
-  };
-};
-
 interface FlowChartProps {
   initialNodes: Node[];
   initialEdges: Edge[];
@@ -66,34 +54,6 @@ function Flow({ initialNodes, initialEdges }: FlowChartProps) {
   const flowRef = useRef<HTMLDivElement>(null);
   const { fitView } = useReactFlow();
 
-  const onConnect = useCallback(
-    (connection: Connection) => {
-      if (!connection.source || !connection.target) return;
-
-      const sourceNode = nodes.find((node) => node.id === connection.source);
-      const targetNode = nodes.find((node) => node.id === connection.target);
-
-      if (!sourceNode || !targetNode) return;
-
-      const smartHandles = getSmartHandles(sourceNode, targetNode);
-
-      setEdges((eds) =>
-        addEdge(
-          {
-            ...connection,
-            ...smartHandles,
-            type: 'custom',
-            animated: true,
-            style: { stroke: '#6366f1', strokeWidth: 2 },
-            labelStyle: { fill: '#4b5563', fontWeight: 500, fontSize: 12 }
-          },
-          eds
-        )
-      );
-    },
-    [nodes, setEdges]
-  );
-
   const handleAutoLayout = () => {
     if (!flowRef.current) return;
     const { width, height } = flowRef.current.getBoundingClientRect();
@@ -110,7 +70,6 @@ function Flow({ initialNodes, initialEdges }: FlowChartProps) {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         defaultEdgeOptions={{
