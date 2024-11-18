@@ -17,29 +17,26 @@ export function UploadModal({ open, onCancel, onConfirm }: UploadModalProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState<string>('');
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      // 验证文件数量
-      if (acceptedFiles.length + files.length > 150) {
-        setError('文件数量超过150个限制');
-        return;
-      }
+  const onDrop = (acceptedFiles: File[]) => {
+    // 验证文件数量
+    if (acceptedFiles.length + files.length > 150) {
+      setError('文件数量超过150个限制');
+      return;
+    }
 
-      // 验证文件总大小
-      const totalSize =
-        acceptedFiles.reduce((acc, file) => acc + file.size, 0) +
-        files.reduce((acc, file) => acc + file.size, 0);
-      if (totalSize > 1000 * 1024 * 1024) {
-        // 1000MB
-        setError('文件总大小超过1000MB限制');
-        return;
-      }
+    // 验证文件总大小
+    const totalSize =
+      acceptedFiles.reduce((acc, file) => acc + file.size, 0) +
+      files.reduce((acc, file) => acc + file.size, 0);
+    if (totalSize > 1000 * 1024 * 1024) {
+      // 1000MB
+      setError('文件总大小超过1000MB限制');
+      return;
+    }
 
-      setFiles((prev) => [...prev, ...acceptedFiles]);
-      setError('');
-    },
-    [files]
-  );
+    setFiles((prev) => [...prev, ...acceptedFiles]);
+    setError('');
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -100,9 +97,11 @@ export function UploadModal({ open, onCancel, onConfirm }: UploadModalProps) {
           <div className="text-sm text-muted-foreground">
             文件要求：
             <ul className="list-disc list-inside space-y-1 mt-2">
+              <li>支持上传多个文件</li>
               <li>
                 支持Excel格式文件（.xlsx/.xls），文件名长度限制128位（包括文件后缀）
               </li>
+
               <li>单次每次上传总大小1000MB，150个以内文件数量</li>
             </ul>
           </div>
