@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 interface Point {
   x: number;
@@ -34,22 +34,22 @@ export const forceDirectedLayout = (
     nodeSpacing = 200,
     springLength = 200,
     springStrength = 0.6,
-    repulsionStrength = 3000,
+    repulsionStrength = 3000
   } = config;
 
   // 深拷贝节点以避免直接修改原始数据
-  const positions = nodes.map(node => ({
+  const positions = nodes.map((node) => ({
     id: node.id,
     x: node.position.x,
     y: node.position.y,
     vx: 0,
-    vy: 0,
+    vy: 0
   }));
 
   // 力导向算法主循环
   for (let i = 0; i < iterations; i++) {
     // 重置加速度
-    positions.forEach(node => {
+    positions.forEach((node) => {
       node.vx = 0;
       node.vy = 0;
     });
@@ -62,7 +62,7 @@ export const forceDirectedLayout = (
         const dx = nodeB.x - nodeA.x;
         const dy = nodeB.y - nodeA.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        
+
         if (distance < 1) continue;
 
         const force = repulsionStrength / (distance * distance);
@@ -77,16 +77,16 @@ export const forceDirectedLayout = (
     }
 
     // 计算边的弹簧力
-    edges.forEach(edge => {
-      const source = positions.find(n => n.id === edge.source);
-      const target = positions.find(n => n.id === edge.target);
-      
+    edges.forEach((edge) => {
+      const source = positions.find((n) => n.id === edge.source);
+      const target = positions.find((n) => n.id === edge.target);
+
       if (!source || !target) return;
 
       const dx = target.x - source.x;
       const dy = target.y - source.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
+
       if (distance < 1) return;
 
       const force = (distance - springLength) * springStrength;
@@ -100,7 +100,7 @@ export const forceDirectedLayout = (
     });
 
     // 更新位置
-    positions.forEach(node => {
+    positions.forEach((node) => {
       node.x += Math.min(Math.max(node.vx, -10), 10);
       node.y += Math.min(Math.max(node.vy, -10), 10);
 
@@ -111,9 +111,9 @@ export const forceDirectedLayout = (
   }
 
   // 返回新的节点位置
-  return positions.map(node => ({
+  return positions.map((node) => ({
     id: node.id,
-    position: { x: node.x, y: node.y },
+    position: { x: node.x, y: node.y }
   }));
 };
 
@@ -126,7 +126,7 @@ export const horizontalLayout = (
     startX = 50,
     startY = 50,
     levelSpacing = 250,
-    nodeSpacing = 100,
+    nodeSpacing = 100
   } = config;
 
   // 创建邻接表
@@ -142,7 +142,7 @@ export const horizontalLayout = (
     if (levels[nodeId] === undefined || level > levels[nodeId]) {
       levels[nodeId] = level;
       if (graph[nodeId]) {
-        graph[nodeId].forEach(targetId => {
+        graph[nodeId].forEach((targetId) => {
           calculateLevels(targetId, level + 1);
         });
       }
@@ -154,8 +154,8 @@ export const horizontalLayout = (
   edges.forEach(({ target }) => {
     inDegree[target] = (inDegree[target] || 0) + 1;
   });
-  const rootNodes = nodes.filter(node => !inDegree[node.id]);
-  rootNodes.forEach(node => calculateLevels(node.id));
+  const rootNodes = nodes.filter((node) => !inDegree[node.id]);
+  rootNodes.forEach((node) => calculateLevels(node.id));
 
   // 计算每一层有多少节点
   const nodesAtLevel: { [key: number]: string[] } = {};
@@ -165,7 +165,7 @@ export const horizontalLayout = (
   });
 
   // 计算新的节点位置
-  return nodes.map(node => {
+  return nodes.map((node) => {
     const level = levels[node.id] || 0;
     const nodesInLevel = nodesAtLevel[level] || [];
     const indexInLevel = nodesInLevel.indexOf(node.id);
@@ -176,7 +176,7 @@ export const horizontalLayout = (
       ...node,
       position: { x, y },
       // 禁止拖拽
-      draggable: false,
+      draggable: false
     };
   });
 };

@@ -50,12 +50,16 @@ interface FlowChartProps {
 }
 
 function Flow({ initialNodes, initialEdges }: FlowChartProps) {
-  const layoutedNodes = horizontalLayout(initialNodes, initialEdges, {
-    startX: 50,
-    startY: 50,
-    levelSpacing: 300,
-    nodeSpacing: 100
-  });
+  const doLayoutNode = () => {
+    return horizontalLayout(initialNodes, initialEdges, {
+      startX: 50,
+      startY: 50,
+      levelSpacing: 300,
+      nodeSpacing: 100
+    });
+  };
+
+  const layoutedNodes: any = doLayoutNode();
 
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -93,12 +97,7 @@ function Flow({ initialNodes, initialEdges }: FlowChartProps) {
   const handleAutoLayout = () => {
     if (!flowRef.current) return;
     const { width, height } = flowRef.current.getBoundingClientRect();
-    const newLayout = horizontalLayout(nodes, edges, {
-      startX: 50,
-      startY: 50,
-      levelSpacing: 250,
-      nodeSpacing: 100
-    });
+    const newLayout: any = doLayoutNode();
 
     setNodes(newLayout);
     setTimeout(() => fitView({ padding: 0.2 }), 50);
