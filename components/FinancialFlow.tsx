@@ -16,8 +16,11 @@ const initialNodes: Node[] = [
     position: { x: 200, y: 100 },
     data: {
       label: '账户 6789',
-      totalIn: 0,
-      totalOut: 100000
+      username: '张三',
+      amount: 1000000,
+      type: '个人账户',
+      date: '2024-01-15',
+      description: '初始资金账户'
     }
   },
   {
@@ -26,8 +29,11 @@ const initialNodes: Node[] = [
     position: { x: 500, y: 100 },
     data: {
       label: '账户 3456',
-      totalIn: 100000,
-      totalOut: 60000
+      username: '李四',
+      amount: 800000,
+      type: '企业账户',
+      date: '2024-01-15',
+      description: '公司运营账户'
     }
   },
   {
@@ -36,8 +42,11 @@ const initialNodes: Node[] = [
     position: { x: 350, y: 300 },
     data: {
       label: '账户 1234',
-      totalIn: 60000,
-      totalOut: 20000
+      username: '王五',
+      amount: 500000,
+      type: '投资账户',
+      date: '2024-01-16',
+      description: '理财投资账户'
     }
   },
   {
@@ -46,8 +55,11 @@ const initialNodes: Node[] = [
     position: { x: 650, y: 300 },
     data: {
       label: '账户 5678',
-      totalIn: 20000,
-      totalOut: 0
+      username: '赵六',
+      amount: 300000,
+      type: '储蓄账户',
+      date: '2024-01-17',
+      description: '个人储蓄账户'
     }
   }
 ];
@@ -71,7 +83,9 @@ const initialEdges: Edge[] = [
     },
     data: {
       amount: 100000,
-      date: '2024-01-15'
+      date: '2024-01-15',
+      type: '转账',
+      description: '业务资金转移'
     }
   },
   {
@@ -92,7 +106,9 @@ const initialEdges: Edge[] = [
     },
     data: {
       amount: 60000,
-      date: '2024-01-16'
+      date: '2024-01-16',
+      type: '投资',
+      description: '理财产品投资'
     }
   },
   {
@@ -113,7 +129,9 @@ const initialEdges: Edge[] = [
     },
     data: {
       amount: 20000,
-      date: '2024-01-17'
+      date: '2024-01-17',
+      type: '提现',
+      description: '投资收益提现'
     }
   }
 ];

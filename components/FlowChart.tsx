@@ -22,7 +22,7 @@ import { Button } from '@/components/ui/button';
 import { LayoutGrid } from 'lucide-react';
 import { CustomNode } from './flow/CustomNode';
 import { CustomEdge } from './flow/CustomEdge';
-import { forceDirectedLayout } from '@/lib/layout-utils';
+import { forceDirectedLayout, horizontalLayout } from '@/lib/layout-utils';
 
 const nodeTypes = {
   custom: CustomNode
@@ -50,7 +50,14 @@ interface FlowChartProps {
 }
 
 function Flow({ initialNodes, initialEdges }: FlowChartProps) {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const layoutedNodes = horizontalLayout(initialNodes, initialEdges, {
+    startX: 50,
+    startY: 50,
+    levelSpacing: 300,
+    nodeSpacing: 100
+  });
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const flowRef = useRef<HTMLDivElement>(null);
   const { fitView } = useReactFlow();
@@ -83,29 +90,22 @@ function Flow({ initialNodes, initialEdges }: FlowChartProps) {
     [nodes, setEdges]
   );
 
-  const handleAutoLayout = useCallback(() => {
+  const handleAutoLayout = () => {
     if (!flowRef.current) return;
     const { width, height } = flowRef.current.getBoundingClientRect();
-    const newLayout = forceDirectedLayout(nodes, edges, {
-      width,
-      height,
-      iterations: 50,
-      nodeSpacing: 200
+    const newLayout = horizontalLayout(nodes, edges, {
+      startX: 50,
+      startY: 50,
+      levelSpacing: 250,
+      nodeSpacing: 100
     });
 
-    setNodes((prevNodes) =>
-      prevNodes.map((node) => ({
-        ...node,
-        position:
-          newLayout.find((n) => n.id === node.id)?.position || node.position
-      }))
-    );
-
-    setTimeout(() => fitView({ duration: 500 }), 50);
-  }, [nodes, edges, setNodes, fitView]);
+    setNodes(newLayout);
+    setTimeout(() => fitView({ padding: 0.2 }), 50);
+  };
 
   return (
-    <div ref={flowRef} className="w-full h-full">
+    <div className="w-full h-full" ref={flowRef}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -114,31 +114,30 @@ function Flow({ initialNodes, initialEdges }: FlowChartProps) {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        connectionMode={ConnectionMode.Loose}
-        fitView
-        fitViewOptions={{
-          padding: 0.2,
-          minZoom: 0.5,
-          maxZoom: 1.5
-        }}
         defaultEdgeOptions={{
           type: 'custom',
           animated: false
         }}
+        connectionMode={ConnectionMode.Loose}
+        fitView
+        fitViewOptions={{ padding: 0.2 }}
+        minZoom={0.1}
+        maxZoom={1.5}
+        proOptions={{ hideAttribution: true }}
+        draggable={false}
       >
-        <Background />
-        <Controls showZoom={false} />
-        <Panel position="top-left">
+        <Panel position="top-right">
           <Button
             variant="outline"
-            size="sm"
+            size="icon"
             onClick={handleAutoLayout}
-            className="gap-2"
+            className="bg-white"
           >
-            <LayoutGrid className="w-4 h-4" />
-            自动布局
+            <LayoutGrid className="h-4 w-4" />
           </Button>
         </Panel>
+        <Background />
+        <Controls />
       </ReactFlow>
     </div>
   );

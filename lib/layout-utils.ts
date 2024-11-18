@@ -15,6 +15,13 @@ interface ForceDirectedConfig {
   repulsionStrength: number;
 }
 
+interface HorizontalLayoutConfig {
+  startX: number;
+  startY: number;
+  levelSpacing: number;
+  nodeSpacing: number;
+}
+
 export const forceDirectedLayout = (
   nodes: { id: string; position: Point }[],
   edges: { source: string; target: string }[],
@@ -108,4 +115,68 @@ export const forceDirectedLayout = (
     id: node.id,
     position: { x: node.x, y: node.y },
   }));
+};
+
+export const horizontalLayout = (
+  nodes: { id: string; position: Point; data?: any }[],
+  edges: { source: string; target: string }[],
+  config: Partial<HorizontalLayoutConfig> = {}
+) => {
+  const {
+    startX = 50,
+    startY = 50,
+    levelSpacing = 250,
+    nodeSpacing = 100,
+  } = config;
+
+  // 创建邻接表
+  const graph: { [key: string]: string[] } = {};
+  edges.forEach(({ source, target }) => {
+    if (!graph[source]) graph[source] = [];
+    graph[source].push(target);
+  });
+
+  // 计算每个节点的层级（从左到右的距离）
+  const levels: { [key: string]: number } = {};
+  const calculateLevels = (nodeId: string, level: number = 0) => {
+    if (levels[nodeId] === undefined || level > levels[nodeId]) {
+      levels[nodeId] = level;
+      if (graph[nodeId]) {
+        graph[nodeId].forEach(targetId => {
+          calculateLevels(targetId, level + 1);
+        });
+      }
+    }
+  };
+
+  // 找到所有根节点（入度为0的节点）
+  const inDegree: { [key: string]: number } = {};
+  edges.forEach(({ target }) => {
+    inDegree[target] = (inDegree[target] || 0) + 1;
+  });
+  const rootNodes = nodes.filter(node => !inDegree[node.id]);
+  rootNodes.forEach(node => calculateLevels(node.id));
+
+  // 计算每一层有多少节点
+  const nodesAtLevel: { [key: number]: string[] } = {};
+  Object.entries(levels).forEach(([nodeId, level]) => {
+    if (!nodesAtLevel[level]) nodesAtLevel[level] = [];
+    nodesAtLevel[level].push(nodeId);
+  });
+
+  // 计算新的节点位置
+  return nodes.map(node => {
+    const level = levels[node.id] || 0;
+    const nodesInLevel = nodesAtLevel[level] || [];
+    const indexInLevel = nodesInLevel.indexOf(node.id);
+    const x = startX + level * levelSpacing;
+    const y = startY + indexInLevel * nodeSpacing;
+
+    return {
+      ...node,
+      position: { x, y },
+      // 禁止拖拽
+      draggable: false,
+    };
+  });
 };
